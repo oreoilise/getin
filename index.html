@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>idk</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .buttons {
+            position: relative;
+            width: 30rem;
+            height: 12rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+        }
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s ease-in-out;
+        }
+        .yes {
+            background-color: #4CAF50;
+            color: white;
+            position: relative;
+        }
+        .no {
+            background-color: red;
+            color: white;
+            position: absolute;
+        }
+        .xoxo {
+            font-size: 40px !important;
+            font-family: 'Brush Script MT', cursive !important;
+            position: fixed !important;
+            bottom: 10% !important;
+            right: 10% !important;
+            color: white !important;
+            text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4, 0 0 30px #ff1493; /* NEON GLOW EFFECT */
+            display: block !important; /* ALWAYS SHOW */
+            z-index: 9999 !important; /* Stays on top */
+            white-space: nowrap; /* Prevents text from wrapping */
+        }
+        /* Name input box */
+        #nameContainer {
+            display: none;
+            margin-top: 20px;
+        }
+        #nameInput {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        #submitName {
+            font-size: 16px;
+            padding: 8px 15px;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-left: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="question">U wanna stalk me?<br> 👀 baghi t3asni?<br></h1>
+    <div class="buttons" id="buttonContainer">
+        <button class="yes" onclick="nextStep()">Yes</button>
+        <button class="no" id="noButton">No</button>
+    </div>
+
+    <!-- Name Input Box (Hidden at first) -->
+    <div id="nameContainer">
+        <p>Enter your name, stalker! 😏</p>
+        <input type="text" id="nameInput" placeholder="Type your name">
+        <button id="submitName" onclick="submitName()">Submit</button>
+    </div>
+
+    <p class="xoxo" id="xoxoMessage">xoxo Aya 💋</p> <!-- ALWAYS VISIBLE NOW -->
+
+    <script>
+        let step = 0;
+
+        function nextStep() {
+            let question = document.getElementById("question");
+            let buttonContainer = document.getElementById("buttonContainer");
+            let nameContainer = document.getElementById("nameContainer");
+
+            if (step === 0) {
+                question.innerHTML = "Are you sure? 🤨<br> rak suur??<br>";
+            } else if (step === 1) {
+                question.innerHTML = "Are you 100% sure???😑<br> rak 100% suur??<br>";
+            } else {
+                // Hide buttons and show the name input box
+                buttonContainer.style.display = "none";
+                nameContainer.style.display = "block";
+                return;
+            }
+
+            step++;
+        }
+
+        function moveNo() {
+            let button = document.getElementById("noButton");
+            let container = document.getElementById("buttonContainer");
+
+            let maxX = container.clientWidth - button.clientWidth;
+            let maxY = container.clientHeight - button.clientHeight;
+
+            let newX = Math.random() * maxX;
+            let newY = Math.random() * maxY;
+
+            button.style.left = `${newX}px`;
+            button.style.top = `${newY}px`;
+        }
+
+        function submitName() {
+            let name = document.getElementById("nameInput").value.trim();
+            if (!name) {
+                alert("Enter your name first!");
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append("Name", name);
+
+            fetch("https://script.google.com/macros/s/AKfycbwa0UCwVyrUXPckQEOWNQviD1fY5aBIpuMdes2O5yKNyyzNVlrRLjAFQ3xXwPtbSekZmA/exec", {
+                method: "POST",
+                body: formData,
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.body.innerHTML = `<h1>Okay ${name}, now get out the fuck of my page!!! 🚪<br> la okhrj mn la page ta3i!!!</h1>
+                                           <p class='xoxo' id="xoxoMessage">xoxo Aya 💋</p>`; 
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Error submitting data.");
+            });
+        }
+
+        let noButton = document.getElementById("noButton");
+        noButton.addEventListener("mouseenter", moveNo); 
+        noButton.addEventListener("touchstart", function(e) { 
+            e.preventDefault();
+            moveNo();
+        });
+
+    </script>
+
+</body>
+</html>
